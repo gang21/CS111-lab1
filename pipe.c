@@ -17,14 +17,12 @@ int main(int argc, char *argv[])
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	//running the first process
-	execlp(argv[1], argv[1], NULL);
+
 	//forking the process
 	cpid = fork();
-	printf("this is working I think");
 
 	//checking for errors in the fork
-	if(cpid = fork()) {
+	if(cpid == fork()) {
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
@@ -34,6 +32,9 @@ int main(int argc, char *argv[])
 		execlp(argv[2], argv[2], NULL);
 		printf("child process ran");
 	}
+
+	//running the parent process
+	execlp(argv[1], argv[1], NULL);
 
 
 	return 0;
