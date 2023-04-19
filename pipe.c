@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	
-	printf(argv[2]);
+
+	printf("argv[2]: %s", argv[2]);
 	//forking the process
 	cpid = fork();
 
