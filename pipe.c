@@ -4,14 +4,11 @@
 
 int main(int argc, char *argv[])
 {
-	int rc = fork();
-	if (rc == 0) {
-		printf("child process\n");
-	}
-	else if (rc > 0){
-		printf("parent process\n");
-	}
-	else {
-		printf("fork error\n");
-	}
+	char *args[] = {"ls", "-aF", "/", NULL};
+	char *env[] = {NULL};
+	printf("About to run execve\n");
+	execve("/bin/ls", args, env);
+
+	perror("execve");
+	exit(1);
 }
