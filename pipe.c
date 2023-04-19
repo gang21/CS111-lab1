@@ -16,12 +16,17 @@ int main(int argc, char *argv[])
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	printf("ARGV[2]: %s\n", argv[2]);
+
 	//forking the process
-	cpid = fork();
-	//switching child process to next argument
+	cpid = fork;
+
+	//redirecting input/outputs of processes
+	dup2(pipefd[0], STDIN_FILENO);
+	dup2(pipefd[1], STDOUT_FILENO);
+
+	//running the child process
 	if (cpid == 0) {
-		printf("child process ran");
+		printf("Child process is running \n");
 		execlp(argv[2], argv[2], NULL);
 		exit(0);
 	}
@@ -30,7 +35,6 @@ int main(int argc, char *argv[])
 	else if (cpid > 0) {
 		int pid = cpid;
 		int status = 0;
-		printf("parent process ran");
 		waitpid(pid, &status, 0);
 		execlp(argv[1], argv[1], NULL);
 		exit(0);
