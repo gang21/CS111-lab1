@@ -22,13 +22,13 @@ int main(int argc, char *argv[])
 	//switching child process to next argument
 	if (cpid == 0) {
 		printf("child process ran");
-		execlp(argv[2], argv[2], NULL);
+		// execlp(argv[2], argv[2], NULL);
 	}
 
 	//running the parent process
 	else if (cpid > 0) {
 		printf("parent process ran");
-		execlp(argv[1], argv[1], NULL);
+		// execlp(argv[1], argv[1], NULL);
 	}
 
 	else {
