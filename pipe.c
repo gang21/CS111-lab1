@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-	//checking for errors in the creation of the pipe/fork
+	//creating the pipe and checking for errors
 	int pipefd[2];
 	pid_t cpid;
 	char buf;
@@ -17,14 +17,17 @@ int main(int argc, char *argv[])
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
+	//forking the process
 	cpid = fork();
+
+	//checking for errors in the fork
 	if(cpid = fork()) {
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
 
 	execlp(argv[1], argv[1], NULL);
-
+	execlp(argv[2], argv[2], NULL);
 
 
 	return 0;
