@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
 	//redirecting input/outputs of processes
 	dup2(pipefd[0], STDIN_FILENO);
-	dup2(pipefd[1], STDOUT_FILENO);
+	dup2(STDOUT_FILENO, pipefd[1]);
 
 	//running the child process
 	if (cpid == 0) {
