@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	int pipefd[2];
 	pid_t cpid;
 	pipe(pipefd);
-	if(argc != 2) {
+	if(argc < 2) {
 		exit(EXIT_FAILURE);
 	}
 	if (pipe(pipefd) == -1) {
