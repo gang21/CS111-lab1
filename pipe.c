@@ -4,7 +4,14 @@
 
 int main(int argc, char *argv[])
 {
-	fork();
-	printf("HI\n");
-	return 0;
+	int rc = fork();
+	if (rc == 0) {
+		printf("child process\n");
+	}
+	else if (rc > 0){
+		printf("parent process\n");
+	}
+	else {
+		printf("fork error\n");
+	}
 }
