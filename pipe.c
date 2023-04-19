@@ -21,12 +21,11 @@ int main(int argc, char *argv[])
 	cpid = fork();
 
 	//redirecting input/outputs of processes
-	dup2(pipefd[1], STDIN_FILENO);
-	close(STDIN_FILENO);
 
 	//running the child process
 	if (cpid == 0) {
 		printf("Child process is running \n");
+		dup2(STDOUT_FILENO, pipefd[0]);
 		execlp(argv[1], argv[1], NULL);
 		exit(0);
 	}
@@ -36,6 +35,7 @@ int main(int argc, char *argv[])
 		int pid = cpid;
 		int status = 0;
 		waitpid(pid, &status, 0);
+		dup2(pipefd[1], STDIN_FILENO);
 		printf("parent process running\n");
 		execlp(argv[2], argv[2], NULL);
 		exit(0);
