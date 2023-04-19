@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
 	printf(argv[2]);
 	//switching child process to next argument
 	if (cpid == 0) {
-		execlp(child, child, NULL);
 		printf("child process ran");
 	}
 
