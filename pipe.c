@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	//running the child process
 	if (cpid == 0) {
 		printf("Child process is running \n");
-		execlp(argv[2], argv[2], NULL);
+		execlp(argv[1], argv[1], NULL);
 		exit(0);
 	}
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 		int status = 0;
 		waitpid(pid, &status, 0);
 		printf("parent process running\n");
-		execlp(argv[1], argv[1], NULL);
+		execlp(argv[2], argv[2], NULL);
 		exit(0);
 	}
 
