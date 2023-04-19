@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 	execlp(argv[1], argv[1], NULL);
 	//forking the process
 	cpid = fork();
+	printf("this is working I think");
 
 	//checking for errors in the fork
 	if(cpid = fork()) {
