@@ -23,12 +23,17 @@ int main(int argc, char *argv[])
 	if (cpid == 0) {
 		printf("child process ran");
 		// execlp(argv[2], argv[2], NULL);
+		exit(0);
 	}
 
 	//running the parent process
 	else if (cpid > 0) {
+		int pid = cpid;
+		int status = 0;
 		printf("parent process ran");
+		waitpid(pid, &status, 0);
 		// execlp(argv[1], argv[1], NULL);
+		exit(0);
 	}
 
 	else {
