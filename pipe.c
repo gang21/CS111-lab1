@@ -27,14 +27,13 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	printf(argv[2]);
 	//switching child process to next argument
 	if (cpid == 0) {
 		printf("child process ran");
 	}
 
 	//running the parent process
-	execlp(argv[1], argv[1], NULL);
+	execlp(argv[2], argv[2], NULL);
 
 
 	return 0;
