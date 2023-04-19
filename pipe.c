@@ -21,8 +21,7 @@ int main(int argc, char *argv[])
 	cpid = fork;
 
 	//redirecting input/outputs of processes
-	dup2(pipefd[0], cpid);
-	dup2(STDOUT_FILENO, pipefd[1]);
+	dup2(pipefd[1], STDIN_FILENO);
 
 	//running the child process
 	if (cpid == 0) {
