@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-	char *args[] = {"ls", "-aF", "/", NULL};
+	char *args[] = {"ls", "|", "wc", NULL};
 	char *env[] = {NULL};
 	printf("About to run execve\n");
 	execve("/bin/ls", args, env);
