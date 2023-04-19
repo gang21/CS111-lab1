@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 	//creating the pipe and checking for errors
 	int pipefd[2];
 	pid_t cpid;
+	pipe(pipefd);
 	char buf;
 	if(argc != 2) {
 		exit(EXIT_FAILURE);
