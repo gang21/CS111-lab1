@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
+	//running the first process
+	execlp(argv[1], argv[1], NULL);
 	//forking the process
 	cpid = fork();
 
@@ -26,8 +28,11 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	execlp(argv[1], argv[1], NULL);
-	execlp(argv[2], argv[2], NULL);
+	//switching child process to next argument
+	if (cpid == 0) {
+		execlp(argv[2], argv[2], NULL);
+		printf("child process ran");
+	}
 
 
 	return 0;
