@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-	char *child[] = argv[2];
+	char child[] = argv[2];
 	//creating the pipe and checking for errors
 	int pipefd[2];
 	pid_t cpid;
