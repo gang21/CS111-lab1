@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 		
 			int status = 0;
 			waitpid(cpid, &status, 0);
-			printf("Child process exits with code: %d\n", WEXITSTATUS(status));
+			printf("Child process exits with code: %d\n", status);
 
 			dup2(fd[0], STDIN_FILENO);
 			// 	perror("dup2");
