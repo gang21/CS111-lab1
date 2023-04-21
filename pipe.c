@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 		pid_t cpid = fork();
 		if(cpid == 0) {
 			printf("Process 1 Running: %s\n", argv[1]);
-			dup2(fd[1], 1);
+			dup2(fd[1], STDOUT_FILENO);
 			// 	printf("dup2\n");
 			// 	exit(EXIT_FAILURE);
 			// }
@@ -38,20 +38,22 @@ int main(int argc, char *argv[])
 		}
 		
 			int status = 0;
-			wait(0);
-			printf("Status: %d\n", status);
+			waitpid(cpid, &status, 0);
+			printf("Child process exits with code: %d\n", WEXITSTATUS(status));
 
-			dup2(fd[0], 0);
+			dup2(fd[0], STDIN_FILENO);
 			// 	perror("dup2");
 			// 	exit(EXIT_FAILURE);
 			// }
 
 			printf("Process 2 Running: %s\n", argv[2]);
+			char buffer[4096];
+			read(fd[0], buffer, 20);
+			printf("%s\n", buffer);
 			close(fd[0]);
-			execlp(argv[2], argv[2], NULL);
+			// execlp(argv[2], argv[2], NULL);
 		
 	}
-
 
 	return 0;
 }
