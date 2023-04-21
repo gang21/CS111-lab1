@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
 	/////////       for loop example      //////////
 	////////////////////////////////////////////////
 
+	int pipes[argc][2];
 	int pids[argc - 1];
-	int pipes[argc];
 	int i;
 	for (i = 0; i < argc - 1; i++) {
 		if (pipe(pipes[i]) == -1) {
@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
 	}
 
 	for (i = 0; i < argc - 1; i++) {
+		//creating forks
 		pids[i] = fork();
 		if(pids[i] == -1) {
 			printf("Error with creating processes\n");
@@ -64,7 +65,6 @@ int main(int argc, char *argv[])
 		}
 		if(pids[i] == 0) {
 			//child process
-
 			int j;
 			for(j = 0; j < argc; j++) {
 				if(i != j) {
