@@ -46,9 +46,10 @@ int main(int argc, char *argv[])
 	}
 
 	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
 	close(fd[0]);
 	close(fd[1]);
+	close(fd2[0]);
+	close(fd2[1]);
 
 	int pid3 = fork();
 	if(pid3 < 0) {
