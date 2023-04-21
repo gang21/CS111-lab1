@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		if(child == 0) {
 			printf("Process 1 Running\n");
 			if(dup2(fd[1], 1) < 0) {
-				perror("dup2");
+				printf("dup2\n");
 				exit(EXIT_FAILURE);
 			}
 			close(fd[0]);
