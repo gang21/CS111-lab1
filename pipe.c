@@ -68,6 +68,8 @@ int main(int argc, char *argv[])
 
 	close(fd2[0]);
 	close(fd2[1]);
+	close(fd[0]);
+	close(fd[1]);
 	waitpid(pid2, NULL, 0);
 	waitpid(pid3, NULL, 0);
 
