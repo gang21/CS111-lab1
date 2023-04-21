@@ -8,11 +8,17 @@
 
 int main(int argc, char *argv[])
 {
-	//first pipe
+	//pipe creating
 	int fd[2];
 	if (pipe(fd) == -1) {
 		return(EXIT_FAILURE);
 	}
+	int fd2[2];
+	if(pipe(fd2) == -1) {
+		return(EXIT_FAILURE);
+	}
+
+
 	int pid1 = fork();
 	if (pid1 < 0) {
 		return(EXIT_FAILURE);
@@ -24,12 +30,6 @@ int main(int argc, char *argv[])
 		close(fd[1]);
 		execlp(argv[1], argv[1], NULL);
 
-	}
-
-	//second pipe
-	int fd2[2];
-	if(pipe(fd2) == -1) {
-		return(EXIT_FAILURE);
 	}
 
 	//second process
@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 	close(fd2[1]);
 	close(fd[0]);
 	close(fd[1]);
+	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
 	waitpid(pid3, NULL, 0);
 
