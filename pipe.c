@@ -31,15 +31,16 @@ int main(int argc, char *argv[])
 			execlp(argv[1], argv[1], NULL);
 		}
 		else {
+			int status = 0;
+			waitpid(cpid, &status, 0);
+
 			if(dup2(fd[0], 0) < 0) {
 				perror("dup2");
 				exit(EXIT_FAILURE);
 			}
 
-			int status = 0;
-			waitpid(cpid, &status, 0);
 			printf("Process 2 Running\n");
-			close(fd[0]);
+			// close(fd[0]);
 			execlp(argv[2], argv[2], NULL);
 		}
 	}
