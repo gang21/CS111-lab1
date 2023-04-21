@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
 			waitpid(cpid, &status, 0);
 			printf("Status: %d\n", status);
 
-			if(dup2(fd[0], 0) < 0) {
-				perror("dup2");
-				exit(EXIT_FAILURE);
-			}
+			dup2(fd[0], 0);
+			// 	perror("dup2");
+			// 	exit(EXIT_FAILURE);
+			// }
 
 			printf("Process 2 Running\n");
-			// close(fd[0]);
+			close(fd[0]);
 			execlp(argv[2], argv[2], NULL);
 		}
 	}
