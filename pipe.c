@@ -6,43 +6,43 @@
 
 int main(int argc, char *argv[])
 {
-	//creating the pipe and checking for errors
-	int pipefd[2];
+	// //creating the pipe and checking for errors
+	// int pipefd[2];
 	pid_t cpid;
-	if(argc < 2) {
-		exit(EXIT_FAILURE);
-	}
-	if (pipe(pipefd) == -1) {
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
+	// if(argc < 2) {
+	// 	exit(EXIT_FAILURE);
+	// }
+	// if (pipe(pipefd) == -1) {
+	// 	perror("pipe");
+	// 	exit(EXIT_FAILURE);
+	// }
 
 	//forking the process
 	cpid = fork();
 
-	//redirecting input/outputs of processes
-
-	//running the child process
 	if (cpid == 0) {
-		printf("Child process is running \n");
-		dup2(STDOUT_FILENO, pipefd[0]);
-		execlp(argv[1], argv[1], NULL);
-		exit(0);
-	}
-
-	//running the parent process
-	else if (cpid > 0) {
-		int pid = cpid;
-		int status = 0;
-		waitpid(pid, &status, 0);
-		dup2(pipefd[1], STDIN_FILENO);
-		printf("parent process running\n");
-		execlp(argv[2], argv[2], NULL);
-		exit(0);
-	}
-
-	else {
-		perror("fork");
+		int fd[2];
+		if (pipe(fd) < 0) {
+			perror("pipe");
+		}
+		pid_t child = fork();
+		if(child == 0) {
+			if(dup2(fd[1], 1) < 0) {
+				perror("dup2");
+			}
+			printf("Process 1 Running\n");
+			close(fd[0]);
+			close(fd[1]);
+			execlp(argv[1], argv[1], NULL);
+		}
+		else {
+			if(dup2(fd[0], 0) < 0) {
+				perror("dup2");
+			}
+			printf("Process 2 Running\n");
+			close(fd[0]);
+			execlp(argv[2], argv[2], NULL);
+		}
 	}
 
 
