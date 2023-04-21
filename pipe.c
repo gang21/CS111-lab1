@@ -35,14 +35,14 @@ int main(int argc, char *argv[])
 			close(fd[1]);
 			execlp(argv[1], argv[1], NULL);
 		}
-		// else {
-		// 	if(dup2(fd[0], 0) < 0) {
-		// 		perror("dup2");
-		// 	}
-		// 	printf("Process 2 Running\n");
-		// 	close(fd[0]);
-		// 	execlp(argv[2], argv[2], NULL);
-		// }
+		else {
+			if(dup2(fd[0], 0) < 0) {
+				perror("dup2");
+			}
+			printf("Process 2 Running\n");
+			close(fd[0]);
+			execlp(argv[2], argv[2], NULL);
+		}
 	}
 
 
