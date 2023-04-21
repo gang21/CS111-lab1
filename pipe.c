@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 		else {
 			int status = 0;
 			waitpid(cpid, &status, 0);
+			printf("Status: %d", status);
 
 			if(dup2(fd[0], 0) < 0) {
 				perror("dup2");
