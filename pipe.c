@@ -45,6 +45,11 @@ int main(int argc, char *argv[])
 		execlp(argv[2], argv[2], NULL);
 	}
 
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
+	close(fd[0]);
+	close(fd[1]);
+
 	int pid3 = fork();
 	if(pid3 < 0) {
 		return(EXIT_FAILURE);
@@ -60,11 +65,8 @@ int main(int argc, char *argv[])
 		execlp(argv[3], argv[3], NULL);
 	}
 
-	close(fd[0]);
-	close(fd[1]);
 	close(fd2[0]);
 	close(fd2[1]);
-	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
 	waitpid(pid3, NULL, 0);
 
