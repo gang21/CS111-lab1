@@ -21,11 +21,11 @@ int main(int argc, char *argv[])
 		}
 		pid_t child = fork();
 		if(child == 0) {
+			printf("Process 1 Running\n");
 			if(dup2(fd[1], 1) < 0) {
 				perror("dup2");
 				exit(EXIT_FAILURE);
 			}
-			printf("Process 1 Running\n");
 			close(fd[0]);
 			close(fd[1]);
 			execlp(argv[1], argv[1], NULL);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		else {
 			int status = 0;
 			waitpid(cpid, &status, 0);
-			printf("Status: %d", status);
+			printf("Status: %d\n", status);
 
 			if(dup2(fd[0], 0) < 0) {
 				perror("dup2");
