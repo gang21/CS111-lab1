@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
 		pid_t child = fork();
 		if(child == 0) {
 			printf("Process 1 Running\n");
-			if(dup2(fd[1], 1) < 0) {
-				printf("dup2\n");
-				exit(EXIT_FAILURE);
-			}
+			dup2(fd[1], 1);
+			// 	printf("dup2\n");
+			// 	exit(EXIT_FAILURE);
+			// }
 			close(fd[0]);
 			close(fd[1]);
 			execlp(argv[1], argv[1], NULL);
