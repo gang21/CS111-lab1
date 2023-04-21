@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 			close(fd[1]);
 			execlp(argv[1], argv[1], NULL);
 		}
-		else {
+		
 			int status = 0;
 			wait(0);
 			printf("Status: %d\n", status);
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 			printf("Process 2 Running: %s\n", argv[2]);
 			close(fd[0]);
 			execlp(argv[2], argv[2], NULL);
-		}
+		
 	}
 
 
