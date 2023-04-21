@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	}
 
 	int fd2[2];
-	if(pipe(fd) == -1) {
+	if(pipe(fd2) == -1) {
 		return(EXIT_FAILURE);
 	}
 
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	}
 	if(pid2 == 0) {
 		dup2(fd[0], STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
+		dup2(fd2[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
 		close(fd2[0]);
