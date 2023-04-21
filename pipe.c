@@ -51,6 +51,9 @@ int main(int argc, char *argv[])
 	}
 	if(pid3 == 0) {
 		printf("PID3 WORKING\n");
+		char buf[4096];
+		read(fd2[0], buf, 20);
+		printf("%s\n", buf);
 		dup2(fd2[0], STDIN_FILENO);
 		close(fd2[0]);
 		close(fd2[1]);
