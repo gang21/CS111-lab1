@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	if(pid3 == 0) {
+		printf("PID3 WORKING\n");
 		dup2(fd2[0], STDIN_FILENO);
 		close(fd2[0]);
 		close(fd2[1]);
