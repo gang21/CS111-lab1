@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-	pid_t cpid;
+	pid_t ppid;
 
 	//checking if there are a valid number of args
 	if(argc < 2) {
@@ -14,10 +14,10 @@ int main(int argc, char *argv[])
 	}
 
 	//forking the process
-	cpid = fork();
+	ppid = fork();
 
 	//parent (child of the shell)
-	if (cpid == 0) {
+	if (ppid == 0) {
 		int fd[2];
 		if (pipe(fd) < 0) {
 			perror("pipe");
@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
 		}
 
 		//child
-		pid_t child = fork();
-		if(child == 0) {
+		pid_t cpid = fork();
+		if(cpid == 0) {
 			printf("Process 1 Running: %s\n", argv[1]);
 			dup2(fd[1], 1);
 			// 	printf("dup2\n");
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		}
 		else {
 			int status = 0;
-			waitpid(cpid, &status, 0);
+			wait(0);
 			printf("Status: %d\n", status);
 
 			dup2(fd[0], 0);
