@@ -82,6 +82,9 @@ int main(int argc, char *argv[])
 		close(fd[1]);
 		execlp(argv[2], argv[2], NULL);
 	}
+
+	close(fd[0]);
+	close(fd[1]);
 	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
 
