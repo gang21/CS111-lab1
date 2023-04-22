@@ -166,20 +166,16 @@ int main(int argc, char *argv[])
 		close(pipes[j][1]);
 	}
 
-	printf("Going to next process\n");
 	// //only do last process if there is a 2nd argument
-	// if(argc > 2) {
+	if(argc > 2) {
 		//last process
 		pids[PROCESS_NUM] = fork();
 		if (pids[PROCESS_NUM] == 0) {
 			printf("Last Process: %s\n", argv[PROCESS_NUM]);
 			dup2(fd[0], STDIN_FILENO);
-			char buffer[4096];
-			read(fd[0], buffer, 40);
-			printf("Buffer: %s\n", buffer);
 			close(fd[0]);
 			close(fd[1]);
-			// execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 		}
 
 		waitpid(pids[PROCESS_NUM], NULL, 0);
