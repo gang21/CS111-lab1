@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(STDOUT_FILENO);
 		execlp(argv[1], argv[1], NULL);
+		printf("error\n");
 	}
 	
 	waitpid(pids[0], 0, 0);
