@@ -79,20 +79,21 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			int x;
-			if(read(pipes[i][0], &x, sizeof(int)) == -1) {
-				printf("Error at reading\n");
-				exit(EXIT_FAILURE);
-			}
+			// int x;
+			// if(read(pipes[i][0], &x, sizeof(int)) == -1) {
+			// 	printf("Error at reading\n");
+			// 	exit(EXIT_FAILURE);
+			// }
 
 
-			printf("(%d) Got %s\n", i,argv[i]);
-			x++;
-			if(write(pipes[i+1][1], &x, sizeof(int)) == -1) {
-				printf("Error at writing\n");
-				exit(EXIT_FAILURE);
-			}
-			printf("(%d) Sent %s\n", i,argv[i]);
+			// printf("(%d) Got %s\n", i,argv[i]);
+			// x++;
+			// if(write(pipes[i+1][1], &x, sizeof(int)) == -1) {
+			// 	printf("Error at writing\n");
+			// 	exit(EXIT_FAILURE);
+			// }
+			// printf("(%d) Sent %s\n", i,argv[i]);
+			execlp(argv[i], argv[i], NULL);
 
 			close(pipes[i][0]);
 			close(pipes[i+1][1]);
