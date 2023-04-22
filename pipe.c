@@ -52,13 +52,13 @@ int main(int argc, char *argv[])
 	close(pipes[0][0]);
 	close(pipes[0][1]);
 
-	int rpid = fork();
-	if(rpid < 0) {
-		return(EXIT_FAILURE);
-	}
-	if(rpid == 0) {
+	// int rpid = fork();
+	// if(rpid < 0) {
+	// 	return(EXIT_FAILURE);
+	// }
+	// if(rpid == 0) {
 
-	}
+	// }
 
 	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
