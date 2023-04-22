@@ -168,9 +168,9 @@ int main(int argc, char *argv[])
 		pids[PROCESS_NUM] = fork();
 		if (pids[PROCESS_NUM] == 0) {
 			printf("Last Process: %s\n", argv[PROCESS_NUM]);
-			dup2(pipes[PROCESS_NUM-1][0], STDIN_FILENO);
-			close(pipes[PROCESS_NUM-1][0]);
-			close(pipes[PROCESS_NUM-1][1]);
+			dup2(pipes[PROCESS_NUM-2][0], STDIN_FILENO);
+			close(pipes[PROCESS_NUM-2][0]);
+			close(pipes[PROCESS_NUM-2][1]);
 			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 		}
 
