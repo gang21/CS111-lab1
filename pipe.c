@@ -101,8 +101,8 @@ int main(int argc, char *argv[])
 			int cpid = fork();
 			if(cpid == 0) {
 				//redirecting input and output
-				dup2(&pipes[i], STDIN_FILENO);
-				dup2(&pipes[i+1],STDOUT_FILENO);
+				dup2(pipes[i][0], STDIN_FILENO);
+				dup2(pipes[i+1][1],STDOUT_FILENO);
 
 				int status = 0;
 				waitpid(pids[i-1], &status, 0);
