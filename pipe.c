@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 	}
 
 	// //only do last process if there is a 2nd argument
-	// if(argc != 2) {
+	if(argc > 2) {
 		//last process
 		pids[PROCESS_NUM] = fork();
 		if (pids[PROCESS_NUM] == 0) {
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 
 		//closing first input and last output pipes
 		close(pipes[PROCESS_NUM][0]);
-	// }
+	}
 
 	return 0;
 }
