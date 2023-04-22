@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	//first process
-	if(pids[0] == 0) {
+	if(pids[1] == 0) {
 		printf("Process 1: %s\n", argv[1]);
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
@@ -42,12 +42,12 @@ int main(int argc, char *argv[])
 	}
 
 	for(i = 1; i < PROCESS_NUM; i++) {
-		waitpid(pids[i], NULL, 0);
 		pids[i+1] = fork();
 		if(pids[i+1] < 0) {
 			return(EXIT_FAILURE);
 		}
 		if(pids[i+1] == 0) {
+			printf("Process (inner) %d: %s\n", i, argv[i+1]);
 			dup2(pipes[i-1][0], STDIN_FILENO);
 			dup2(pipes[i][1], STDOUT_FILENO);
 			close(pipes[i-1][0]);
