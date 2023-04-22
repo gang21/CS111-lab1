@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	}
 	if(ppid == 0) {
 		dup2(pipes[0][0], STDIN_FILENO);
-		dup2(pipes[1][0], STDOUT_FILENO);
+		dup2(pipes[1][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 		close(pipes[1][0]);
