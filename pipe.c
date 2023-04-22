@@ -57,15 +57,15 @@ int main(int argc, char *argv[])
 
 	//3rd fork
 	int rpid = fork();
-	if(rpid < 0) {
-		return(EXIT_FAILURE);
-	}
-	if(rpid == 0) {
-		dup2(pipes[1][0], STDIN_FILENO);
-		close(pipes[1][0]);
-		close(pipes[1][1]);
-		// execlp(argv[3], argv[3], NULL);
-	}
+	// if(rpid < 0) {
+	// 	return(EXIT_FAILURE);
+	// }
+	// if(rpid == 0) {
+	// 	dup2(pipes[1][0], STDIN_FILENO);
+	// 	close(pipes[1][0]);
+	// 	close(pipes[1][1]);
+	// 	execlp(argv[3], argv[3], NULL);
+	// }
 
 	close(pipes[1][0]);
 	close(pipes[1][1]);
