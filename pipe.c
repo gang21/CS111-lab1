@@ -49,14 +49,14 @@ int main(int argc, char *argv[])
 	int pipes[argc][2];
 	int pids[argc - 1];
 	int i;
-	for (i = 0; i < argc - 1; i++) {
+	for (i = 0; i < argc; i++) {
 		if (pipe(pipes[i]) == -1) {
 			printf("Error with creating pipe\n");
 			return(EXIT_FAILURE);
 		}
 	}
 
-	for (i = 0; i < argc - 1; i++) {
+	for (i = 1; i < argc; i++) {
 		//creating forks
 		pids[i] = fork();
 		if(pids[i] == -1) {
@@ -74,7 +74,15 @@ int main(int argc, char *argv[])
 					close(pipes[j][1]);
 				}
 			}
-			return(EXIT_SUCCESS);
+			close(pipes[i][0]);
+			close(pipes[i+1][1]);
+
+			//main process
+			if(i < argc - 1) {
+				printf("This is loop #%d with p1: %s and p2: %s\n", i, argv[i], argv[i+1]);
+			}
+			//if execlp doesn't work
+			// return(EXIT_SUCCESS);
 		}
 	}
 	for (i=0; i < argc - 1; i++) {
