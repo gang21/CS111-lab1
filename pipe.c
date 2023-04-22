@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	pids[0] = fork();
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
-		dup2(pipes[0][1], STDOUT_FILENO);
+		// dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 		execlp(argv[1], argv[1], NULL);
