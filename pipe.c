@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	waitpid(pids[0], 0, 0);
 
 	//creating loop of processes
-	for(i = 1; i < PROCESS_NUM-1; i++) {
+	for(i = 2; i < PROCESS_NUM-1; i++) {
 		pids[i] = fork();
 		if(pids[i] == -1) {
 			printf("Error with creating processes\n");
