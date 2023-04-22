@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 
 		//closing first input and last output pipes
 		close(pipes[PROCESS_NUM][0]);
-	// }
+	}
 
 	return 0;
 }
