@@ -45,11 +45,11 @@ int main(int argc, char *argv[])
 	}
 	if(ppid == 0) {
 		dup2(pipes[0][0], STDIN_FILENO);
-		dup2(pipes[1][1], STDOUT_FILENO);
+		dup2(pipes[NUM_PIPES - 1][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
-		close(pipes[1][0]);
-		close(pipes[1][1]);
+		close(pipes[NUM_PIPES - 1][0]);
+		close(pipes[NUM_PIPES - 1][1]);
 		execlp(argv[2], argv[2], NULL);
 	}
 	close(pipes[0][0]);
@@ -60,14 +60,14 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	if(rpid == 0) {
-		dup2(pipes[1][0], STDIN_FILENO);
-		close(pipes[1][0]);
-		close(pipes[1][1]);
+		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
+		close(pipes[NUM_PIPES - 1][0]);
+		close(pipes[NUM_PIPES - 1][1]);
 		execlp(argv[3], argv[3], NULL);
 	}
 
-	close(pipes[1][0]);
-	close(pipes[1][1]);
+	close(pipes[NUM_PIPES - 1][0]);
+	close(pipes[NUM_PIPES - 1][1]);
 	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
 	waitpid(rpid, NULL, 0);
