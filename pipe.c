@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	int pipes[PROCESS_NUM + 1][2];
 	int pids[PROCESS_NUM];
 	int i;
-	
+
 	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
 		if(pipe(pipes[i]) == -1) {
@@ -66,13 +66,14 @@ int main(int argc, char *argv[])
 	}
 
 	//first process
-	// int j;
-	// for(j = 0; j < PROCESS_NUM + 1; j++) {
-	// 	close(pipes[j][0]);
-	// 	if(j != 0) {
-	// 		close(pipes[j][1]);
-	// 	}
-	// }
+	int j;
+	for(j = 0; j < PROCESS_NUM + 1; j++) {
+		close(pipes[j][0]);
+		if(j != 0) {
+			close(pipes[j][1]);
+		}
+	}
+
 	pids[0] = fork();
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
@@ -84,9 +85,6 @@ int main(int argc, char *argv[])
 	
 	waitpid(pids[0], 0, 0);
 
-	char buffer[4096];
-	read(pipes[0][1], buffer, sizeof(int));
-	printf("Output: %s\n", buffer);
 	close(pipes[1][1]);
 	close(pipes[1][0]);
 	
