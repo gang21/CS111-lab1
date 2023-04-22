@@ -9,9 +9,17 @@
 int main(int argc, char *argv[])
 {
 	//pipe creating
-	int fd[2];
-	if (pipe(fd) == -1) {
-		return(EXIT_FAILURE);
+
+	int PROCESS_NUM = argc - 1;
+	int pipes[PROCESS_NUM - 1][2];
+	int pids[PROCESS_NUM];
+	int i;
+	//creating all the pipes
+	for(i = 0; i < PROCESS_NUM + 1; i++) {
+		if(pipe(pipes[i]) == -1) {
+			printf("error with creating pipe\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 	int cpid = fork();
 	if (cpid < 0) {
@@ -19,9 +27,9 @@ int main(int argc, char *argv[])
 	}
 	//child process
 	if(cpid == 0) {
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		dup2(pipes[0][1], STDOUT_FILENO);
+		close(pipes[0][0]);
+		close(pipes[0][1]);
 		execlp(argv[1], argv[1], NULL);
 
 	}
@@ -31,13 +39,13 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	if(ppid == 0) {
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		dup2(pipes[0][0], STDIN_FILENO);
+		close(pipes[0][0]);
+		close(pipes[0][1]);
 		execlp(argv[2], argv[2], NULL);
 	}
-	close(fd[0]);
-	close(fd[1]);
+	close(pipes[0][0]);
+	close(pipes[0][1]);
 	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
 
