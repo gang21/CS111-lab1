@@ -8,89 +8,89 @@
 
 int main(int argc, char *argv[])
 {
-	// //pipe creating
-	// int fd[2];
-	// if (pipe(fd) == -1) {
-	// 	return(EXIT_FAILURE);
-	// }
-	// int cpid = fork();
-	// if (cpid < 0) {
-	// 	return(EXIT_FAILURE);
-	// }
-	// //child process
-	// if(cpid == 0) {
-	// 	dup2(fd[1], STDOUT_FILENO);
-	// 	close(fd[0]);
-	// 	close(fd[1]);
-	// 	execlp(argv[1], argv[1], NULL);
+	//pipe creating
+	int fd[2];
+	if (pipe(fd) == -1) {
+		return(EXIT_FAILURE);
+	}
+	int cpid = fork();
+	if (cpid < 0) {
+		return(EXIT_FAILURE);
+	}
+	//child process
+	if(cpid == 0) {
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		execlp(argv[1], argv[1], NULL);
 
-	// }
-	// //parent
-	// int ppid = fork();
-	// if (ppid < 0) {
-	// 	return(EXIT_FAILURE);
-	// }
-	// if(ppid == 0) {
-	// 	dup2(fd[0], STDIN_FILENO);
-	// 	close(fd[0]);
-	// 	close(fd[1]);
-	// 	execlp(argv[2], argv[2], NULL);
-	// }
-	// close(fd[0]);
-	// close(fd[1]);
-	// waitpid(cpid, NULL, 0);
-	// waitpid(ppid, NULL, 0);
+	}
+	//parent
+	int ppid = fork();
+	if (ppid < 0) {
+		return(EXIT_FAILURE);
+	}
+	if(ppid == 0) {
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		execlp(argv[2], argv[2], NULL);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(cpid, NULL, 0);
+	waitpid(ppid, NULL, 0);
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////       for loop example      //////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	//error case
-	if(argc < 2) {
-		printf("Not enough arguments\n");
-		exit(EXIT_FAILURE);
-	}
+	// //error case
+	// if(argc < 2) {
+	// 	printf("Not enough arguments\n");
+	// 	exit(EXIT_FAILURE);
+	// }
 	
-	int PROCESS_NUM = argc - 1;
-	int pipes[PROCESS_NUM - 1][2];
-	int pids[PROCESS_NUM];
-	int i;
+	// int PROCESS_NUM = argc - 1;
+	// int pipes[PROCESS_NUM - 1][2];
+	// int pids[PROCESS_NUM];
+	// int i;
 
-	//test
-	int fd[2];
-	pipe(fd);
+	// //test
+	// int fd[2];
+	// pipe(fd);
 
-	//creating all the pipes
-	for(i = 0; i < PROCESS_NUM + 1; i++) {
-		if(pipe(pipes[i]) == -1) {
-			printf("error with creating pipe\n");
-			exit(EXIT_FAILURE);
-		}
-	}
+	// //creating all the pipes
+	// for(i = 0; i < PROCESS_NUM + 1; i++) {
+	// 	if(pipe(pipes[i]) == -1) {
+	// 		printf("error with creating pipe\n");
+	// 		exit(EXIT_FAILURE);
+	// 	}
+	// }
 
-	//first process
-	int j;
-	for(j = 0; j < PROCESS_NUM + 1; j++) {
-		close(pipes[j][0]);
-		if(j != 0) {
-			close(pipes[j][1]);
-		}
-	}
+	// //first process
+	// int j;
+	// for(j = 0; j < PROCESS_NUM + 1; j++) {
+	// 	close(pipes[j][0]);
+	// 	if(j != 0) {
+	// 		close(pipes[j][1]);
+	// 	}
+	// }
 
-	pids[0] = fork();
-	if (pids[0] == 0) {
-		printf("First Process: %s\n", argv[1]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		execlp(argv[1], argv[1], NULL);
-	}
+	// pids[0] = fork();
+	// if (pids[0] == 0) {
+	// 	printf("First Process: %s\n", argv[1]);
+	// 	dup2(fd[1], STDOUT_FILENO);
+	// 	close(fd[0]);
+	// 	close(fd[1]);
+	// 	execlp(argv[1], argv[1], NULL);
+	// }
 	
-	waitpid(pids[0], 0, 0);
+	// waitpid(pids[0], 0, 0);
 
-	close(fd[0]);
-	close(fd[1]);
+	// close(fd[0]);
+	// close(fd[1]);
 	
 
 	// //creating loop of processes
@@ -155,34 +155,34 @@ int main(int argc, char *argv[])
 	// }
 
 	//wait for all child processes to finish execution
-	for(i = 0; i < PROCESS_NUM; i++) {
-		wait(NULL);
-	}
+	// for(i = 0; i < PROCESS_NUM; i++) {
+	// 	wait(NULL);
+	// }
 
-	for(j = 0; j < PROCESS_NUM + 1; j++) {
-		if (j != PROCESS_NUM) {
-			close(pipes[j][0]);
-		}
-		close(pipes[j][1]);
-	}
+	// for(j = 0; j < PROCESS_NUM + 1; j++) {
+	// 	if (j != PROCESS_NUM) {
+	// 		close(pipes[j][0]);
+	// 	}
+	// 	close(pipes[j][1]);
+	// }
 
 	// //only do last process if there is a 2nd argument
 	// printf("argc: %d\n", argc);
 	// if(argc != 2) {
 		//last process
-		pids[PROCESS_NUM] = fork();
-		if (pids[PROCESS_NUM] == 0) {
-			printf("Last Process: %s\n", argv[PROCESS_NUM]);
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
-			close(fd[1]);
-			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
-		}
+		// pids[PROCESS_NUM] = fork();
+		// if (pids[PROCESS_NUM] == 0) {
+		// 	printf("Last Process: %s\n", argv[PROCESS_NUM]);
+		// 	dup2(fd[0], STDIN_FILENO);
+		// 	close(fd[0]);
+		// 	close(fd[1]);
+		// 	execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+		// }
 
-		waitpid(pids[PROCESS_NUM], NULL, 0);
+		// waitpid(pids[PROCESS_NUM], NULL, 0);
 
-		//closing first input and last output pipes
-		close(pipes[PROCESS_NUM][0]);
+		// //closing first input and last output pipes
+		// close(pipes[PROCESS_NUM][0]);
 	// }
 
 	return 0;
