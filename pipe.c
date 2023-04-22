@@ -31,6 +31,15 @@ int main(int argc, char *argv[])
 	if (pids[1] < 0) {
 		return(EXIT_FAILURE);
 	}
+
+	//first process
+	int j;
+	for(j = 0; j < PROCESS_NUM + 1; j++) {
+		close(pipes[j][0]);
+		if(j != 0) {
+			close(pipes[j][1]);
+		}
+	}
 	//first process
 	if(pids[1] == 0) {
 		printf("Process 1: %s\n", argv[1]);
@@ -46,8 +55,19 @@ int main(int argc, char *argv[])
 		if(pids[i+1] < 0) {
 			return(EXIT_FAILURE);
 		}
+
+		//closing unused pipes
+		int j;
+		for(j = 0; j < PROCESS_NUM + 1; j++) {
+			if (i != j) {
+				close(pipes[j][0]);
+			}
+			if(i+1 != j) {
+				close(pipes[j][1]);
+			}
+		}
 		if(pids[i+1] == 0) {
-			printf("Process (inner) %d: %s\n", i, argv[i+1]);
+			printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
 			dup2(pipes[i-1][0], STDIN_FILENO);
 			dup2(pipes[i][1], STDOUT_FILENO);
 			close(pipes[i-1][0]);
@@ -76,6 +96,13 @@ int main(int argc, char *argv[])
 	// close(pipes[0][0]);
 	// close(pipes[0][1]);
 
+	for(j = 0; j < PROCESS_NUM + 1; j++) {
+		if (j != PROCESS_NUM) {
+			close(pipes[j][0]);
+		}
+		close(pipes[j][1]);
+	}
+	
 	//last process
 	pids[PROCESS_NUM] = fork();
 	if(pids[PROCESS_NUM] < 0) {
