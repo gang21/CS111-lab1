@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			printf("(%d) Got %s\n", i,argv[i]);
 			int cpid = fork();
 			if(cpid == 0) {
 				execlp(argv[i], argv[i], NULL);
@@ -90,8 +91,6 @@ int main(int argc, char *argv[])
 			// 	exit(EXIT_FAILURE);
 			// }
 
-
-			 printf("(%d) Got %s\n", i,argv[i]);
 			// x++;
 			// if(write(pipes[i+1][1], &x, sizeof(int)) == -1) {
 			// 	printf("Error at writing\n");
