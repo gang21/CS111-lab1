@@ -82,10 +82,11 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	if(pids[PROCESS_NUM] == 0) {
+		printf("Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
 		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
-		execlp(argv[3], argv[3], NULL);
+		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 	}
 
 	close(pipes[NUM_PIPES - 1][0]);
