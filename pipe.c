@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	}
 
 	//creating actual processes
-	for(i = 0; i < PROCESS_NUM; i++) {
+	for(i = 1; i < PROCESS_NUM; i++) {
 		pids[i] = fork();
 		if(pids[i] == -1) {
 			printf("Error with creating processes\n");
