@@ -102,10 +102,9 @@ int main(int argc, char *argv[])
 			if(cpid == 0) {
 				dup2(pipes[i], STDIN_FILENO);
 				dup2(pipes[i+1],STDOUT_FILENO);
+				waitpid(pids[i-1], 0, 0);
 				execlp(argv[i+1], argv[i+1], NULL);
 			}
-			int status = 0;
-			// waitpid(cpid, &status, 0);
 			if(status != 0) {
 				printf("error with process %s\n", argv[i]);
 				exit(EXIT_FAILURE);
