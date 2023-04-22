@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
 	waitpid(pids[0], 0, 0);
 
-	//creating actual processes
+	//creating loop of processes
 	for(i = 1; i < PROCESS_NUM-1; i++) {
 		pids[i] = fork();
 		if(pids[i] == -1) {
@@ -100,14 +100,21 @@ int main(int argc, char *argv[])
 
 			int cpid = fork();
 			if(cpid == 0) {
+				//redirecting input and output
 				dup2(pipes[i], STDIN_FILENO);
 				dup2(pipes[i+1],STDOUT_FILENO);
-				waitpid(pids[i-1], 0, 0);
-				execlp(argv[i+1], argv[i+1], NULL);
-			}
-			if(status != 0) {
+
+				int status = 0;
+				waitpid(pids[i-1], &status, 0);
+
+				//error with previous process
+				if(status != 0) {
 				printf("error with process %s\n", argv[i]);
-				exit(EXIT_FAILURE);
+					exit(EXIT_FAILURE);
+				}
+
+				//execution of next process
+				execlp(argv[i+1], argv[i+1], NULL);
 			}
 			printf("(%d) Got %s\n", i,argv[i+1]);
 
