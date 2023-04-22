@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
 	for(i = 1; i < PROCESS_NUM; i++) {
 		printf("Process %d: %s\n", i+1, argv[i+1]);
 		pids[i+1] = fork();
-		if(pids[i] < 0) {
+		if(pids[i+1] < 0) {
 			return(EXIT_FAILURE);
 		}
-		if(pids[i] == 0) {
+		if(pids[i+1] == 0) {
 			printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
 			dup2(pipes[i][0], STDIN_FILENO);
 			dup2(pipes[i+1][1], STDOUT_FILENO);
