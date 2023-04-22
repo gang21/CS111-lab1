@@ -46,6 +46,12 @@ int main(int argc, char *argv[])
 	/////////////////////////////       for loop example      //////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////
 
+	//error case
+	if(argc < 2) {
+		printf("Not enough arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	
 	int PROCESS_NUM = argc - 1;
 	int pipes[PROCESS_NUM + 1][2];
 	int pids[PROCESS_NUM];
@@ -157,19 +163,23 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//last process
-	pids[PROCESS_NUM] = fork();
-	if (pids[PROCESS_NUM] == 0) {
-		printf("Last Process: %s\n", argv[PROCESS_NUM]);
-		dup2(pipes[PROCESS_NUM-1][0], STDIN_FILENO);
-		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+	//only do last process if there is a 
+	if(argc != 2) {
+		//last process
+		pids[PROCESS_NUM] = fork();
+		if (pids[PROCESS_NUM] == 0) {
+			printf("Last Process: %s\n", argv[PROCESS_NUM]);
+			dup2(pipes[PROCESS_NUM-1][0], STDIN_FILENO);
+			close(STDIN_FILENO);
+			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+		}
+
+		waitpid(pids[PROCESS_NUM], 0, 0);
+
+		//closing first input and last output pipes
+		close(pipes[0][1]);
+		close(pipes[PROCESS_NUM][0]);
 	}
-
-	waitpid(pids[PROCESS_NUM], 0, 0);
-
-	//closing first input and last output pipes
-	close(pipes[0][1]);
-	close(pipes[PROCESS_NUM][0]);
 
 	return 0;
 }
