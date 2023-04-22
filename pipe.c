@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 
 	int PROCESS_NUM = argc - 1;
 	int NUM_PIPES = PROCESS_NUM - 1;
-	int pipes[NUM_PIPES][2];
-	int pids[PROCESS_NUM];
+	int pipes[2][2];
+	// int pids[PROCESS_NUM];
 	int i;
 	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
