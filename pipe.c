@@ -81,11 +81,11 @@ int main(int argc, char *argv[])
 			//if execlp doesn't work
 			// return(EXIT_SUCCESS);
 		}
-	}
-
-	//main process
-	if(i < argc - 1) {
-		printf("This is loop #%d with p1: %s and p2: %s\n", i, argv[i], argv[i+1]);
+		
+		//main process
+		if(i < argc - 1) {
+			printf("This is loop #%d with p1: %s and p2: %s\n", i, argv[i], argv[i+1]);
+		}		
 	}
 
 	for (i=0; i < argc - 1; i++) {
