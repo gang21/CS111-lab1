@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
 	}
 
-	for(i = 1; i < PROCESS_NUM-1; i++) {
+	for(i = 1; i < PROCESS_NUM; i++) {
 		pids[i+1] = fork();
 		if(pids[i] < 0) {
 			return(EXIT_FAILURE);
