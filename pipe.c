@@ -171,7 +171,10 @@ int main(int argc, char *argv[])
 			dup2(pipes[0][0], STDIN_FILENO);
 			close(pipes[0][0]);
 			close(pipes[0][1]);
-			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+			char buffer[4096];
+			read(pipes[0][0], buffer, 40);
+			printf("Buffer: %s\n", buffer);
+			// execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 		}
 
 		waitpid(pids[PROCESS_NUM], NULL, 0);
