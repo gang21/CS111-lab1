@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
 		close(pipes[j][1]);
 	}
 
-	print("Going to next process\n");
+	printf("Going to next process\n");
 	// //only do last process if there is a 2nd argument
 	// if(argc > 2) {
 		//last process
