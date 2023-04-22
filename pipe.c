@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	if(ppid == 0) {
-		dup2(pipes[0][0], STDIN_FILENO);
-		close(pipes[0][0]);
-		close(pipes[0][1]);
+		dup2(pipes[PROCESS_NUM-2][0], STDIN_FILENO);
+		close(pipes[PROCESS_NUM-2][0]);
+		close(pipes[PROCESS_NUM-2][1]);
 		execlp(argv[2], argv[2], NULL);
 	}
-	close(pipes[0][0]);
-	close(pipes[0][1]);
+	close(pipes[PROCESS_NUM-2][0]);
+	close(pipes[PROCESS_NUM-2][1]);
 	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
 
