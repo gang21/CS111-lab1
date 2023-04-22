@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	}
 	
 	int PROCESS_NUM = argc - 1;
-	int pipes[PROCESS_NUM][2];
+	int pipes[PROCESS_NUM - 1][2];
 	int pids[PROCESS_NUM];
 	int i;
 
