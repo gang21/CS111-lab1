@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	}
 	
 	int PROCESS_NUM = argc - 1;
-	int pipes[PROCESS_NUM][2];
+	int pipes[PROCESS_NUM + 1][2];
 	int pids[PROCESS_NUM];
 	int i;
 
@@ -68,9 +68,7 @@ int main(int argc, char *argv[])
 	//first process
 	int j;
 	for(j = 0; j < PROCESS_NUM + 1; j++) {
-		if (j != PROCESS_NUM) {
-			close(pipes[j][0]);
-		}
+		close(pipes[j][0]);
 		if(j != 0) {
 			close(pipes[j][1]);
 		}
@@ -158,9 +156,7 @@ int main(int argc, char *argv[])
 		if (j != PROCESS_NUM) {
 			close(pipes[j][0]);
 		}
-		if(j != 0) {
-			close(pipes[j][1]);
-		}
+		close(pipes[j][1]);
 	}
 
 	//only do last process if there is a 
