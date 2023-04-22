@@ -55,8 +55,6 @@ int main(int argc, char *argv[])
 	close(pipes[0][0]);
 	close(pipes[0][1]);
 
-	waitpid(cpid, NULL, 0);
-
 	//3rd fork
 	int rpid = fork();
 	if(rpid < 0) {
@@ -66,12 +64,13 @@ int main(int argc, char *argv[])
 		dup2(pipes[1][0], STDIN_FILENO);
 		close(pipes[1][0]);
 		close(pipes[1][1]);
-		execlp(argv[3], argv[3], NULL);
+		// execlp(argv[3], argv[3], NULL);
 	}
 
 	close(pipes[1][0]);
 	close(pipes[1][1]);
 
+	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
 	waitpid(rpid, NULL, 0);
 
