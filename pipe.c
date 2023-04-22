@@ -79,14 +79,13 @@ int main(int argc, char *argv[])
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(STDOUT_FILENO);
 		execlp(argv[1], argv[1], NULL);
-		printf("error\n");
 	}
 	
 	waitpid(pids[0], 0, 0);
 
 	char buffer[4096];
 	read(pipes[0][1], buffer, sizeof(int));
-	printf("%s\n", buffer);
+	printf("Output: %s\n", buffer);
 	close(pipes[1][1]);
 	close(pipes[1][0]);
 	
