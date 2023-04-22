@@ -42,9 +42,9 @@ int main(int argc, char *argv[])
 	// waitpid(ppid, NULL, 0);
 
 
-	////////////////////////////////////////////////
-	/////////       for loop example      //////////
-	////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////       for loop example      //////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////
 
 	int PROCESS_NUM = argc - 1;
 	int pipes[PROCESS_NUM + 1][2];
@@ -73,10 +73,14 @@ int main(int argc, char *argv[])
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
 		dup2(pipes[1][1], STDOUT_FILENO);
+		close(STDOUT_FILENO);
 		execlp(argv[1], argv[1], NULL);
 	}
-
+	
 	waitpid(pids[0], 0, 0);
+	close(pipes[1][1]);
+	close(pipes[1][0]);
+	
 
 	//creating loop of processes
 	for(i = 2; i < PROCESS_NUM-1; i++) {
@@ -103,6 +107,8 @@ int main(int argc, char *argv[])
 				//redirecting input and output
 				dup2(pipes[i][0], STDIN_FILENO);
 				dup2(pipes[i+1][1],STDOUT_FILENO);
+				close(STDIN_FILENO);
+				close(STDOUT_FILENO);
 
 				int status = 0;
 				waitpid(pids[i-1], &status, 0);
