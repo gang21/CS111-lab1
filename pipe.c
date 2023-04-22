@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	}
 	//first process
 	if(pids[0] == 0) {
-		printf("Process 0: %s\n", argv[0]);
+		printf("Process 1: %s\n", argv[1]);
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
 	}
 
-	for(i = 0; i < PROCESS_NUM-1; i++) {
+	for(i = 1; i < PROCESS_NUM-1; i++) {
 		pids[i+1] = fork();
 		if(pids[i] < 0) {
 			return(EXIT_FAILURE);
