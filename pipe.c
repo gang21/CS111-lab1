@@ -79,6 +79,11 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			int cpid = fork();
+			if(cpid == 0) {
+				execlp(argv[i], argv[i], NULL);
+			}
+
 			// int x;
 			// if(read(pipes[i][0], &x, sizeof(int)) == -1) {
 			// 	printf("Error at reading\n");
@@ -93,7 +98,6 @@ int main(int argc, char *argv[])
 			// 	exit(EXIT_FAILURE);
 			// }
 			// printf("(%d) Sent %s\n", i,argv[i]);
-			execlp(argv[i], argv[i], NULL);
 
 			close(pipes[i][0]);
 			close(pipes[i+1][1]);
@@ -113,7 +117,7 @@ int main(int argc, char *argv[])
 
 	//processes in main (first and last)
 	int y = 5;
-	printf("Main process sent %d\n", y);
+	// printf("Main process sent %d\n", y);
 	if(write(pipes[0][1], &y, sizeof(int)) == -1) {
 		printf("Error at writing\n");
 		exit(EXIT_FAILURE);
@@ -122,7 +126,7 @@ int main(int argc, char *argv[])
 		printf("Error at reading\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("The final result is %d\n", y);
+	// printf("The final result is %d\n", y);
 
 	//closing first input and last output pipes
 	close(pipes[0][1]);
