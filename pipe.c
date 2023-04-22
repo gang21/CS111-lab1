@@ -57,6 +57,9 @@ int main(int argc, char *argv[])
 	int pids[PROCESS_NUM];
 	int i;
 
+	int fd[2];
+	pipe(fd[2]);
+
 	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
 		if(pipe(pipes[i]) == -1) {
@@ -76,10 +79,10 @@ int main(int argc, char *argv[])
 	pids[0] = fork();
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
-		dup2(pipes[0][1], STDOUT_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
 		close(STDOUT_FILENO);
-		close(pipes[0][0]);
-		close(pipes[0][1]);
+		close(fd[0]);
+		close(fd[1]);
 		execlp(argv[1], argv[1], NULL);
 	}
 	
