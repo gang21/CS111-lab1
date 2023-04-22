@@ -66,13 +66,13 @@ int main(int argc, char *argv[])
 	}
 
 	//first process
-	int j;
-	for(j = 0; j < PROCESS_NUM + 1; j++) {
-		close(pipes[j][0]);
-		if(j != 0) {
-			close(pipes[j][1]);
-		}
-	}
+	// int j;
+	// for(j = 0; j < PROCESS_NUM + 1; j++) {
+	// 	close(pipes[j][0]);
+	// 	if(j != 0) {
+	// 		close(pipes[j][1]);
+	// 	}
+	// }
 	pids[0] = fork();
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
