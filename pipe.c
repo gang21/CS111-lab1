@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 			// }
 
 
-			// printf("(%d) Got %s\n", i,argv[i]);
+			 printf("(%d) Got %s\n", i,argv[i]);
 			// x++;
 			// if(write(pipes[i+1][1], &x, sizeof(int)) == -1) {
 			// 	printf("Error at writing\n");
