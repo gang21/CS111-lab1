@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 
 	int PROCESS_NUM = argc - 1;
 	int NUM_PIPES = PROCESS_NUM - 1;
-	int pipes[2][2];
-	// int pids[PROCESS_NUM];
+	int pipes[NUM_PIPES][2];
+	int pids[PROCESS_NUM];
 	int i;
 	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
@@ -44,36 +44,24 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 	if(ppid == 0) {
-		dup2(pipes[0][0], STDIN_FILENO);
-		dup2(pipes[1][1], STDOUT_FILENO);
-		close(pipes[0][0]);
-		close(pipes[0][1]);
-		close(pipes[1][0]);
-		close(pipes[1][1]);
+		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
+		close(pipes[NUM_PIPES - 1][0]);
+		close(pipes[NUM_PIPES - 1][1]);
 		execlp(argv[2], argv[2], NULL);
 	}
+	close(pipes[NUM_PIPES - 1][0]);
+	close(pipes[NUM_PIPES - 1][1]);
 
-	//3rd fork
 	int rpid = fork();
-	// if(rpid < 0) {
-	// 	return(EXIT_FAILURE);
-	// }
-	// if(rpid == 0) {
-	// 	dup2(pipes[1][0], STDIN_FILENO);
-	// 	close(pipes[1][0]);
-	// 	close(pipes[1][1]);
-	// 	execlp(argv[3], argv[3], NULL);
-	// }
+	if(rpid < 0) {
+		return(EXIT_FAILURE);
+	}
+	if(rpid == 0) {
 
-	close(pipes[0][0]);
-	close(pipes[0][1]);
-	close(pipes[1][0]);
-	close(pipes[1][1]);
+	}
 
 	waitpid(cpid, NULL, 0);
 	waitpid(ppid, NULL, 0);
-	waitpid(rpid, NULL, 0);
-
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
