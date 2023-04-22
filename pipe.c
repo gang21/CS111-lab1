@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	pids[0] = fork();
-	if (pids[0] < 0) {
+	pids[1] = fork();
+	if (pids[1] < 0) {
 		return(EXIT_FAILURE);
 	}
 	//first process
