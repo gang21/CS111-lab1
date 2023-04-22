@@ -168,16 +168,15 @@ int main(int argc, char *argv[])
 		pids[PROCESS_NUM] = fork();
 		if (pids[PROCESS_NUM] == 0) {
 			printf("Last Process: %s\n", argv[PROCESS_NUM]);
-			dup2(pipes[PROCESS_NUM-2][0], STDIN_FILENO);
-			close(pipes[PROCESS_NUM-2][0]);
-			close(pipes[PROCESS_NUM-2][1]);
+			dup2(pipes[0][0], STDIN_FILENO);
+			close(pipes[0][0]);
+			close(pipes[0][1]);
 			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 		}
 
 		waitpid(pids[PROCESS_NUM], 0, 0);
 
 		//closing first input and last output pipes
-		close(pipes[0][1]);
 		close(pipes[PROCESS_NUM][0]);
 	}
 
