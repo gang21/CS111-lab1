@@ -57,6 +57,10 @@ int main(int argc, char *argv[])
 	int pids[PROCESS_NUM];
 	int i;
 
+	//test
+	int fd[2];
+	pipe(fd);
+
 	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
 		if(pipe(pipes[i]) == -1) {
@@ -77,16 +81,16 @@ int main(int argc, char *argv[])
 	pids[0] = fork();
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
-		// dup2(pipes[0][1], STDOUT_FILENO);
-		close(pipes[0][0]);
-		close(pipes[0][1]);
+		dup2(fd[0], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
 		execlp(argv[1], argv[1], NULL);
 	}
 	
 	waitpid(pids[0], 0, 0);
 
-	close(pipes[1][1]);
-	close(pipes[1][0]);
+	close(fd[0]);
+	close(fd[1]);
 	
 
 	// //creating loop of processes
@@ -168,12 +172,12 @@ int main(int argc, char *argv[])
 		pids[PROCESS_NUM] = fork();
 		if (pids[PROCESS_NUM] == 0) {
 			printf("Last Process: %s\n", argv[PROCESS_NUM]);
-			dup2(pipes[0][0], STDIN_FILENO);
-			close(pipes[0][0]);
-			close(pipes[0][1]);
+			dup2(fd[0], STDIN_FILENO);
 			char buffer[4096];
-			read(pipes[0][0], buffer, 40);
+			read(fd[0], buffer, 40);
 			printf("Buffer: %s\n", buffer);
+			close(fd[0]);
+			close(fd[1]);
 			// execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 		}
 
