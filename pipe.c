@@ -80,7 +80,6 @@ int main(int argc, char *argv[])
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
 		dup2(fd[1], STDOUT_FILENO);
-		close(STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
 		execlp(argv[1], argv[1], NULL);
