@@ -31,8 +31,9 @@ int main(int argc, char *argv[])
 	if (pids[0] < 0) {
 		return(EXIT_FAILURE);
 	}
-	//child process
+	//first process
 	if(pids[0] == 0) {
+		printf("Process 0: %s\n", argv[0]);
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
@@ -46,6 +47,7 @@ int main(int argc, char *argv[])
 			return(EXIT_FAILURE);
 		}
 		if(pids[i] == 0) {
+			printf("Process %d: %s\n", i+1, argv[i+1]);
 			dup2(pipes[i][0], STDIN_FILENO);
 			dup2(pipes[i+1][1], STDOUT_FILENO);
 			close(pipes[i][0]);
@@ -74,6 +76,7 @@ int main(int argc, char *argv[])
 	// close(pipes[0][0]);
 	// close(pipes[0][1]);
 
+	//last process
 	pids[PROCESS_NUM] = fork();
 	if(pids[PROCESS_NUM] < 0) {
 		return(EXIT_FAILURE);
