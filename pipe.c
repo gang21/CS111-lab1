@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 				execlp(argv[i], argv[i], NULL);
 			}
 			int status = 0;
-			waitpid(cpid, &status, 0);
+			// waitpid(cpid, &status, 0);
 			if(status != 0) {
 				printf("error with process %s\n", argv[i]);
 				exit(EXIT_FAILURE);
@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
 	//processes in main (first and last)
 	int y = 5;
 	// printf("Main process sent %d\n", y);
+
 	if(write(pipes[0][1], &y, sizeof(int)) == -1) {
 		printf("Error at writing\n");
 		exit(EXIT_FAILURE);
