@@ -52,8 +52,6 @@ int main(int argc, char *argv[])
 		close(pipes[1][1]);
 		execlp(argv[2], argv[2], NULL);
 	}
-	close(pipes[0][0]);
-	close(pipes[0][1]);
 
 	//3rd fork
 	int rpid = fork();
@@ -67,6 +65,8 @@ int main(int argc, char *argv[])
 	// 	execlp(argv[3], argv[3], NULL);
 	// }
 
+	close(pipes[0][0]);
+	close(pipes[0][1]);
 	close(pipes[1][0]);
 	close(pipes[1][1]);
 
