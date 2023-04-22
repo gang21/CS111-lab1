@@ -84,6 +84,12 @@ int main(int argc, char *argv[])
 			if(cpid == 0) {
 				execlp(argv[i], argv[i], NULL);
 			}
+			int status = 0;
+			waitpid(cpid, &status, 0);
+			if(status != 0) {
+				printf("error with process %s\n", argv[i]);
+				exit(EXIT_FAILURE);
+			}
 
 			// int x;
 			// if(read(pipes[i][0], &x, sizeof(int)) == -1) {
