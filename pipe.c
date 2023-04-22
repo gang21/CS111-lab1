@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			printf("(%d) Got %s\n", i,argv[i]);
 			int cpid = fork();
 			if(cpid == 0) {
 				execlp(argv[i], argv[i], NULL);
@@ -90,6 +89,7 @@ int main(int argc, char *argv[])
 				printf("error with process %s\n", argv[i]);
 				exit(EXIT_FAILURE);
 			}
+			printf("(%d) Got %s\n", i,argv[i]);
 
 			// int x;
 			// if(read(pipes[i][0], &x, sizeof(int)) == -1) {
