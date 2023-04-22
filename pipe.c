@@ -150,35 +150,36 @@ int main(int argc, char *argv[])
 	// 	}
 	// }
 
-	// //wait for all child processes to finish execution
-	// for(i = 0; i < PROCESS_NUM; i++) {
-	// 	wait(NULL);
-	// }
+	//wait for all child processes to finish execution
+	for(i = 0; i < PROCESS_NUM; i++) {
+		wait(NULL);
+	}
 
-	// for(j = 0; j < PROCESS_NUM + 1; j++) {
-	// 	if (j != PROCESS_NUM) {
-	// 		close(pipes[j][0]);
-	// 	}
-	// 	close(pipes[j][1]);
-	// }
+	for(j = 0; j < PROCESS_NUM + 1; j++) {
+		if (j != PROCESS_NUM) {
+			close(pipes[j][0]);
+		}
+		close(pipes[j][1]);
+	}
 
-	// //only do last process if there is a 
-	// if(argc != 2) {
-	// 	//last process
-	// 	pids[PROCESS_NUM] = fork();
-	// 	if (pids[PROCESS_NUM] == 0) {
-	// 		printf("Last Process: %s\n", argv[PROCESS_NUM]);
-	// 		dup2(pipes[PROCESS_NUM-1][0], STDIN_FILENO);
-	// 		close(STDIN_FILENO);
-	// 		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
-	// 	}
+	// //only do last process if there is a 2nd argument
+	if(argc != 2) {
+		//last process
+		pids[PROCESS_NUM] = fork();
+		if (pids[PROCESS_NUM] == 0) {
+			printf("Last Process: %s\n", argv[PROCESS_NUM]);
+			dup2(pipes[PROCESS_NUM-1][0], STDIN_FILENO);
+			close(pipes[PROCESS_NUM-1][0]);
+			close(pipes[PROCESS_NUM-1][1]);
+			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+		}
 
-	// 	waitpid(pids[PROCESS_NUM], 0, 0);
+		waitpid(pids[PROCESS_NUM], 0, 0);
 
-	// 	//closing first input and last output pipes
-	// 	close(pipes[0][1]);
-	// 	close(pipes[PROCESS_NUM][0]);
-	// }
+		//closing first input and last output pipes
+		close(pipes[0][1]);
+		close(pipes[PROCESS_NUM][0]);
+	}
 
 	return 0;
 }
