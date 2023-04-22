@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	int pids[PROCESS_NUM];
 	int i;
 
-	//creating the pipes
+	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
 		if(pipe(pipes[i]) == -1) {
 			printf("error with creating pipe\n");
@@ -100,7 +100,17 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//main process
+	int j;
+	for(j = 0; j < PROCESS_NUM + 1; j++) {
+		if (j != PROCESS_NUM) {
+			close(pipes[j][0]);
+		}
+		if(j != 0) {
+			close(pipes[j][1]);
+		}
+	}
+
+	//processes in main (first and last)
 	int y = 5;
 	printf("Main process sent %d\n", y);
 	if(write(pipes[0][1], &y, sizeof(int)) == -1) {
@@ -112,6 +122,10 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	printf("The final result is %d\n", y);
+
+	//closing first input and last output pipes
+	close(pipes[0][1]);
+	close(pipes[PROCESS_NUM][0]);
 
 	//wait for all child processes to finish execution
 	for(i = 0; i < PROCESS_NUM; i++) {
