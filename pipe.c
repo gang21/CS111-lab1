@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 	}
 
 	for(i = 1; i < PROCESS_NUM; i++) {
+		waitpid(pids[i]);
 		pids[i+1] = fork();
 		if(pids[i+1] < 0) {
 			return(EXIT_FAILURE);
