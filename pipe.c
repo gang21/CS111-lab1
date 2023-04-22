@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 		printf("Error at reading\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("(%d) Got %s\n", i,argv[PROCESS_NUM]);
+	printf("(%d) Main Got %s\n", i,argv[PROCESS_NUM]);
 	// printf("The final result is %d\n", y);
 
 	//closing first input and last output pipes
