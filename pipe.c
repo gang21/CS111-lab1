@@ -59,8 +59,27 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	//first process
+	int j;
+	for(j = 0; j < PROCESS_NUM + 1; j++) {
+		if (j != PROCESS_NUM) {
+			close(pipes[j][0]);
+		}
+		if(j != 0) {
+			close(pipes[j][1]);
+		}
+	}
+	pids[0] = fork();
+	if (pids[0] == 0) {
+		printf("First Process: %s\n", argv[1]);
+		dup2(pipes[1][1], STDOUT_FILENO);
+		execlp(argv[1], argv[1], NULL);
+	}
+
+	waitpid(pids[0], 0, 0);
+
 	//creating actual processes
-	for(i = 1; i < PROCESS_NUM; i++) {
+	for(i = 1; i < PROCESS_NUM-1; i++) {
 		pids[i] = fork();
 		if(pids[i] == -1) {
 			printf("Error with creating processes\n");
@@ -81,7 +100,9 @@ int main(int argc, char *argv[])
 
 			int cpid = fork();
 			if(cpid == 0) {
-				execlp(argv[i], argv[i], NULL);
+				dup2(pipes[i], STDIN_FILENO);
+				dup2(pipes[i+1],STDOUT_FILENO);
+				execlp(argv[i+1], argv[i+1], NULL);
 			}
 			int status = 0;
 			// waitpid(cpid, &status, 0);
@@ -89,7 +110,7 @@ int main(int argc, char *argv[])
 				printf("error with process %s\n", argv[i]);
 				exit(EXIT_FAILURE);
 			}
-			printf("(%d) Got %s\n", i,argv[i]);
+			printf("(%d) Got %s\n", i,argv[i+1]);
 
 			// int x;
 			// if(read(pipes[i][0], &x, sizeof(int)) == -1) {
@@ -110,6 +131,11 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	//wait for all child processes to finish execution
+	for(i = 0; i < PROCESS_NUM; i++) {
+		wait(NULL);
+	}
+
 	int j;
 	for(j = 0; j < PROCESS_NUM + 1; j++) {
 		if (j != PROCESS_NUM) {
@@ -120,29 +146,19 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//processes in main (first and last)
-	int y = 5;
-	// printf("Main process sent %d\n", y);
-
-	if(write(pipes[0][1], &y, sizeof(int)) == -1) {
-		printf("Error at writing\n");
-		exit(EXIT_FAILURE);
+	//last process
+	pids[PROCESS_NUM] = fork();
+	if (pids[PROCESS_NUM] == 0) {
+		printf("Last Process: %s\n", argv[PROCESS_NUM]);
+		dup2(pipes[PROCESS_NUM-1][0], STDIN_FILENO);
+		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 	}
-	if(read(pipes[PROCESS_NUM][0], &y, sizeof(int)) == -1) {
-		printf("Error at reading\n");
-		exit(EXIT_FAILURE);
-	}
-	printf("(%d) Main Got %s\n", i,argv[PROCESS_NUM]);
-	// printf("The final result is %d\n", y);
 
+	waitpid(pids[PROCESS_NUM], 0, 0);
+	
 	//closing first input and last output pipes
 	close(pipes[0][1]);
 	close(pipes[PROCESS_NUM][0]);
-
-	//wait for all child processes to finish execution
-	for(i = 0; i < PROCESS_NUM; i++) {
-		wait(NULL);
-	}
 
 	return 0;
 }
