@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	}
 	
 	int PROCESS_NUM = argc - 1;
-	int pipes[PROCESS_NUM + 1][2];
+	int pipes[PROCESS_NUM - 1][2];
 	int pids[PROCESS_NUM];
 	int i;
 
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	if (pids[0] == 0) {
 		printf("First Process: %s\n", argv[1]);
 		dup2(pipes[1][1], STDOUT_FILENO);
-		// close(STDOUT_FILENO);
+		close(STDOUT_FILENO);
 		execlp(argv[1], argv[1], NULL);
 	}
 	
