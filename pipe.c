@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	int i;
 
 	int fd[2];
-	pipe(fd[2]);
+	pipe(fd);
 
 	//creating all the pipes
 	for(i = 0; i < PROCESS_NUM + 1; i++) {
