@@ -26,40 +26,45 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		}
 	}
-	int cpid = fork();
-	if (cpid < 0) {
+
+	pids[0] = fork();
+	if (pids[0] < 0) {
 		return(EXIT_FAILURE);
 	}
 	//child process
-	if(cpid == 0) {
+	if(pids[0] == 0) {
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 		execlp(argv[1], argv[1], NULL);
 
 	}
-	//parent
-	int ppid = fork();
-	if (ppid < 0) {
-		return(EXIT_FAILURE);
-	}
-	if(ppid == 0) {
-		dup2(pipes[0][0], STDIN_FILENO);
-		dup2(pipes[NUM_PIPES - 1][1], STDOUT_FILENO);
-		close(pipes[0][0]);
-		close(pipes[0][1]);
-		close(pipes[NUM_PIPES - 1][0]);
-		close(pipes[NUM_PIPES - 1][1]);
-		execlp(argv[2], argv[2], NULL);
-	}
-	close(pipes[0][0]);
-	close(pipes[0][1]);
 
-	int rpid = fork();
-	if(rpid < 0) {
+	for(i = 1; i < PROCESS_NUM-1; i++) {
+
+	}
+	// //parent
+	// int ppid = fork();
+	// if (ppid < 0) {
+	// 	return(EXIT_FAILURE);
+	// }
+	// if(ppid == 0) {
+	// 	dup2(pipes[0][0], STDIN_FILENO);
+	// 	dup2(pipes[NUM_PIPES - 1][1], STDOUT_FILENO);
+	// 	close(pipes[0][0]);
+	// 	close(pipes[0][1]);
+	// 	close(pipes[NUM_PIPES - 1][0]);
+	// 	close(pipes[NUM_PIPES - 1][1]);
+	// 	execlp(argv[2], argv[2], NULL);
+	// }
+	// close(pipes[0][0]);
+	// close(pipes[0][1]);
+
+	pids[PROCESS_NUM] = fork();
+	if(pids[PROCESS_NUM] < 0) {
 		return(EXIT_FAILURE);
 	}
-	if(rpid == 0) {
+	if(pids[PROCESS_NUM] == 0) {
 		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
@@ -68,10 +73,10 @@ int main(int argc, char *argv[])
 
 	close(pipes[NUM_PIPES - 1][0]);
 	close(pipes[NUM_PIPES - 1][1]);
-	waitpid(cpid, NULL, 0);
-	waitpid(ppid, NULL, 0);
-	waitpid(rpid, NULL, 0);
-
+	
+	for(i = 0; i < PROCESS_NUM; i++) {
+		waitpid(pids[i], NULL, 0);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////       for loop example      //////////////////////////////
