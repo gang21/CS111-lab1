@@ -136,7 +136,6 @@ int main(int argc, char *argv[])
 		wait(NULL);
 	}
 
-	int j;
 	for(j = 0; j < PROCESS_NUM + 1; j++) {
 		if (j != PROCESS_NUM) {
 			close(pipes[j][0]);
@@ -155,7 +154,7 @@ int main(int argc, char *argv[])
 	}
 
 	waitpid(pids[PROCESS_NUM], 0, 0);
-	
+
 	//closing first input and last output pipes
 	close(pipes[0][1]);
 	close(pipes[PROCESS_NUM][0]);
