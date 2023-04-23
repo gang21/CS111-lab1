@@ -50,35 +50,35 @@ int main(int argc, char *argv[])
 
 	}
 
-	// for(i = 1; i < PROCESS_NUM - 1; i++) {
-	// 	pids[i+1] = fork();
-	// 	if(pids[i+1] < 0) {
-	// 		return(EXIT_FAILURE);
-	// 	}
+	for(i = 1; i < PROCESS_NUM - 1; i++) {
+		pids[i+1] = fork();
+		if(pids[i+1] < 0) {
+			return(EXIT_FAILURE);
+		}
 
-	// 	//closing unused pipes
-	// 	int j;
-	// 	for(j = 0; j < PROCESS_NUM + 1; j++) {
-	// 		if (i != j) {
-	// 			close(pipes[j][0]);
-	// 		}
-	// 		if(i+1 != j) {
-	// 			close(pipes[j][1]);
-	// 		}
-	// 	}
-	// 	if(pids[i+1] == 0) {
-	// 		printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
-	// 		dup2(pipes[i-1][0], STDIN_FILENO);
-	// 		dup2(pipes[i][1], STDOUT_FILENO);
-	// 		close(pipes[i-1][0]);
-	// 		close(pipes[i-1][1]);
-	// 		close(pipes[i][0]);
-	// 		close(pipes[i][1]);
-	// 		execlp(argv[i+1], argv[i+1], NULL);
-	// 	}
-	// 	close(pipes[i][0]);
-	// 	close(pipes[i][1]);
-	// }
+		//closing unused pipes
+		int j;
+		for(j = 0; j < PROCESS_NUM + 1; j++) {
+			if (i != j) {
+				close(pipes[j][0]);
+			}
+			if(i+1 != j) {
+				close(pipes[j][1]);
+			}
+		}
+		if(pids[i+1] == 0) {
+			printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
+			dup2(pipes[i-1][0], STDIN_FILENO);
+			dup2(pipes[i][1], STDOUT_FILENO);
+			close(pipes[i-1][0]);
+			close(pipes[i-1][1]);
+			close(pipes[i][0]);
+			close(pipes[i][1]);
+			execlp(argv[i+1], argv[i+1], NULL);
+		}
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+	}
 	//parent
 	int ppid = fork();
 	if (ppid < 0) {
@@ -104,32 +104,20 @@ int main(int argc, char *argv[])
 	}
 
 	//last process
-	// pids[PROCESS_NUM] = fork();
-	// if(pids[PROCESS_NUM] < 0) {
-	// 	return(EXIT_FAILURE);
-	// }
-	// if(pids[PROCESS_NUM] == 0) {
-	// 	printf("Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
-	// 	dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
-	// 	close(pipes[NUM_PIPES - 1][0]);
-	// 	close(pipes[NUM_PIPES - 1][1]);
-	// 	execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
-	// }
 	pids[PROCESS_NUM] = fork();
 	if(pids[PROCESS_NUM] < 0) {
 		return(EXIT_FAILURE);
 	}
 	if(pids[PROCESS_NUM] == 0) {
 		printf("Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
-		dup2(pipes[1][0], STDIN_FILENO);
-		close(pipes[1][0]);
-		close(pipes[1][1]);
+		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
+		close(pipes[NUM_PIPES - 1][0]);
+		close(pipes[NUM_PIPES - 1][1]);
 		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 	}
 
-
-	close(pipes[1][0]);
-	close(pipes[1][1]);
+	close(pipes[NUM_PIPES - 1][0]);
+	close(pipes[NUM_PIPES - 1][1]);
 	
 	for(i = 0; i < PROCESS_NUM; i++) {
 		waitpid(pids[i], NULL, 0);
