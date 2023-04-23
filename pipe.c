@@ -69,12 +69,12 @@ int main(int argc, char *argv[])
 		}
 		if(pids[i] == 0) {
 			printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
-			dup2(pipes[i-1][0], STDIN_FILENO);
-			dup2(pipes[i][1], STDOUT_FILENO);
-			close(pipes[i-1][0]);
-			close(pipes[i-1][1]);
+			dup2(pipes[i][0], STDIN_FILENO);
+			dup2(pipes[i+1][1], STDOUT_FILENO);
 			close(pipes[i][0]);
 			close(pipes[i][1]);
+			close(pipes[i+1][0]);
+			close(pipes[i+1][1]);
 			execlp(argv[i+1], argv[i+1], NULL);
 		}
 		close(pipes[i][0]);
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
-		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+		execlp(argv[PROCESS_NUM-1], argv[PROCESS_NUM-1], NULL);
 	}
 
 	close(pipes[NUM_PIPES - 1][0]);
