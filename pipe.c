@@ -32,14 +32,13 @@ int main(int argc, char *argv[])
 		return(EXIT_FAILURE);
 	}
 
-	//first process
-	int j;
-	for(j = 0; j < PROCESS_NUM + 1; j++) {
-		close(pipes[j][0]);
-		if(j != 0) {
-			close(pipes[j][1]);
-		}
-	}
+	// int j;
+	// for(j = 0; j < PROCESS_NUM + 1; j++) {
+	// 	close(pipes[j][0]);
+	// 	if(j != 0) {
+	// 		close(pipes[j][1]);
+	// 	}
+	// }
 	//first process
 	if(pids[0] == 0) {
 		printf("First Process 1: %s\n", argv[1]);
@@ -114,15 +113,17 @@ int main(int argc, char *argv[])
 		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
-		execlp(argv[PROCESS_NUM-1], argv[PROCESS_NUM-1], NULL);
+		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 	}
 
+	waitpid(pids[0], NULL, 0);
+	waitpid(pids[1], NULL, 0);
 	close(pipes[NUM_PIPES - 1][0]);
 	close(pipes[NUM_PIPES - 1][1]);
 	
-	for(i = 0; i < PROCESS_NUM; i++) {
-		waitpid(pids[i], NULL, 0);
-	}
+	// for(i = 0; i < PROCESS_NUM; i++) {
+	// 	waitpid(pids[i], NULL, 0);
+	// }
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////       for loop example      //////////////////////////////
