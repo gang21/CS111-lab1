@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	}
 	//first process
 	if(pids[1] == 0) {
-		printf("Process 1: %s\n", argv[1]);
+		printf("First Process 1: %s\n", argv[1]);
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 	}
 
 	for(i = 1; i < PROCESS_NUM - 1; i++) {
+		printf("The for loop be running\n");
 		pids[i+1] = fork();
 		if(pids[i+1] < 0) {
 			return(EXIT_FAILURE);
@@ -104,12 +105,12 @@ int main(int argc, char *argv[])
 	// }
 
 	//last process
-	pids[PROCESS_NUM] = fork();
-	if(pids[PROCESS_NUM] < 0) {
+	pids[PROCESS_NUM-1] = fork();
+	if(pids[PROCESS_NUM-1] < 0) {
 		return(EXIT_FAILURE);
 	}
-	if(pids[PROCESS_NUM] == 0) {
-		printf("Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
+	if(pids[PROCESS_NUM-1] == 0) {
+		printf("Last Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
 		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
