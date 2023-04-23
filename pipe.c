@@ -115,15 +115,13 @@ int main(int argc, char *argv[])
 		close(pipes[NUM_PIPES - 1][1]);
 		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 	}
+
 	close(pipes[NUM_PIPES - 1][0]);
 	close(pipes[NUM_PIPES - 1][1]);
-	waitpid(pids[0], NULL, 0);
-	waitpid(pids[1], NULL, 0);
 	
-	
-	// for(i = 0; i < PROCESS_NUM; i++) {
-	// 	waitpid(pids[i], NULL, 0);
-	// }
+	for(i = 0; i < PROCESS_NUM; i++) {
+		waitpid(pids[i], NULL, 0);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////       for loop example      //////////////////////////////
