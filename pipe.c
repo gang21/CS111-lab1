@@ -34,9 +34,7 @@ int main(int argc, char *argv[])
 
 	//first process
 	if(pids[0] == 0) {
-		if (dup2(pipes[0][1], STDOUT_FILENO) != 0) {
-			return(EXIT_FAILURE);
-		}
+		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 		execlp(argv[1], argv[1], NULL);
@@ -50,12 +48,8 @@ int main(int argc, char *argv[])
 		}
 
 		if(pids[i] == 0) {
-			if (dup2(pipes[i-1][0], STDIN_FILENO)!= 0) {
-				return(EXIT_FAILURE);
-			}
-			if (dup2(pipes[i][1], STDOUT_FILENO) != 0) {
-				return(EXIT_FAILURE);
-			}
+			dup2(pipes[i-1][0], STDIN_FILENO);
+			dup2(pipes[i][1], STDOUT_FILENO);
 			close(pipes[i-1][0]);
 			close(pipes[i-1][1]);
 			close(pipes[i][0]);
@@ -73,9 +67,7 @@ int main(int argc, char *argv[])
 			return(EXIT_FAILURE);
 		}
 		if(pids[PROCESS_NUM-1] == 0) {
-			if(dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO) != 0) {
-				return(EXIT_FAILURE);
-			}
+			dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 			close(pipes[NUM_PIPES - 1][0]);
 			close(pipes[NUM_PIPES - 1][1]);
 			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
