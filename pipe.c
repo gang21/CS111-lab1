@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	int pids[PROCESS_NUM];
 	int i;
 	//creating all the pipes
-	for(i = 0; i < PROCESS_NUM + 1; i++) {
+	for(i = 0; i < NUM_PIPES; i++) {
 		if(pipe(pipes[i]) == -1) {
 			printf("error with creating pipe\n");
 			exit(EXIT_FAILURE);
