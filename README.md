@@ -3,7 +3,7 @@
 
 ## Pipe Up
 
-This code is meant to replace the pipe operator (|) in shells. Users will pass in executable names as command line arguments and the program will execute each one in a new process.
+This code is meant to replace the pipe operator ```|``` in shells. Users will pass in executable names as command line arguments and the program will execute each one in a new process.
 
 ## Building
 
@@ -18,10 +18,12 @@ Show an example run of your program, using at least two additional arguments, an
 
 To run the program, enter the `./pipe ` command followed by however many arguments you want. The arguments that follow should be processes that can be run on the shell such as `cat` or `ls`.
 
-```./pipe ls cat wc
+```
+./pipe ls cat wc
 ```
 is equivalent to: 
-``` ls | cat | wc
+``` 
+ls | cat | wc
 ```
 
 ## Cleaning up

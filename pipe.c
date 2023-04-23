@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	//not enough arguments
 	if(argc < 2) {
 		printf("Not enough arguments\n");
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 
 	int PROCESS_NUM = argc - 1;
