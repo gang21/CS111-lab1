@@ -104,20 +104,32 @@ int main(int argc, char *argv[])
 	}
 
 	//last process
+	// pids[PROCESS_NUM] = fork();
+	// if(pids[PROCESS_NUM] < 0) {
+	// 	return(EXIT_FAILURE);
+	// }
+	// if(pids[PROCESS_NUM] == 0) {
+	// 	printf("Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
+	// 	dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
+	// 	close(pipes[NUM_PIPES - 1][0]);
+	// 	close(pipes[NUM_PIPES - 1][1]);
+	// 	execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+	// }
 	pids[PROCESS_NUM] = fork();
 	if(pids[PROCESS_NUM] < 0) {
 		return(EXIT_FAILURE);
 	}
 	if(pids[PROCESS_NUM] == 0) {
 		printf("Process %d: %s\n", PROCESS_NUM, argv[PROCESS_NUM]);
-		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
-		close(pipes[NUM_PIPES - 1][0]);
-		close(pipes[NUM_PIPES - 1][1]);
+		dup2(pipes[1][0], STDIN_FILENO);
+		close(pipes[1][0]);
+		close(pipes[1][1]);
 		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
 	}
 
-	close(pipes[NUM_PIPES - 1][0]);
-	close(pipes[NUM_PIPES - 1][1]);
+
+	close(pipes[1][0]);
+	close(pipes[1][1]);
 	
 	for(i = 0; i < PROCESS_NUM; i++) {
 		waitpid(pids[i], NULL, 0);
