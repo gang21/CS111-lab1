@@ -50,51 +50,51 @@ int main(int argc, char *argv[])
 
 	}
 
-	for(i = 1; i < PROCESS_NUM - 1; i++) {
-		pids[i+1] = fork();
-		if(pids[i+1] < 0) {
-			return(EXIT_FAILURE);
-		}
+	// for(i = 1; i < PROCESS_NUM - 1; i++) {
+	// 	pids[i+1] = fork();
+	// 	if(pids[i+1] < 0) {
+	// 		return(EXIT_FAILURE);
+	// 	}
 
-		//closing unused pipes
-		int j;
-		for(j = 0; j < PROCESS_NUM + 1; j++) {
-			if (i != j) {
-				close(pipes[j][0]);
-			}
-			if(i+1 != j) {
-				close(pipes[j][1]);
-			}
-		}
-		if(pids[i+1] == 0) {
-			printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
-			dup2(pipes[i-1][0], STDIN_FILENO);
-			dup2(pipes[i][1], STDOUT_FILENO);
-			close(pipes[i-1][0]);
-			close(pipes[i-1][1]);
-			close(pipes[i][0]);
-			close(pipes[i][1]);
-			execlp(argv[i+1], argv[i+1], NULL);
-		}
-		close(pipes[i][0]);
-		close(pipes[i][1]);
+	// 	//closing unused pipes
+	// 	int j;
+	// 	for(j = 0; j < PROCESS_NUM + 1; j++) {
+	// 		if (i != j) {
+	// 			close(pipes[j][0]);
+	// 		}
+	// 		if(i+1 != j) {
+	// 			close(pipes[j][1]);
+	// 		}
+	// 	}
+	// 	if(pids[i+1] == 0) {
+	// 		printf("Process (inner) %d: %s\n", i+1, argv[i+1]);
+	// 		dup2(pipes[i-1][0], STDIN_FILENO);
+	// 		dup2(pipes[i][1], STDOUT_FILENO);
+	// 		close(pipes[i-1][0]);
+	// 		close(pipes[i-1][1]);
+	// 		close(pipes[i][0]);
+	// 		close(pipes[i][1]);
+	// 		execlp(argv[i+1], argv[i+1], NULL);
+	// 	}
+	// 	close(pipes[i][0]);
+	// 	close(pipes[i][1]);
+	// }
+	//parent
+	int ppid = fork();
+	if (ppid < 0) {
+		return(EXIT_FAILURE);
 	}
-	// //parent
-	// int ppid = fork();
-	// if (ppid < 0) {
-	// 	return(EXIT_FAILURE);
-	// }
-	// if(ppid == 0) {
-	// 	dup2(pipes[0][0], STDIN_FILENO);
-	// 	dup2(pipes[NUM_PIPES - 1][1], STDOUT_FILENO);
-	// 	close(pipes[0][0]);
-	// 	close(pipes[0][1]);
-	// 	close(pipes[NUM_PIPES - 1][0]);
-	// 	close(pipes[NUM_PIPES - 1][1]);
-	// 	execlp(argv[2], argv[2], NULL);
-	// }
-	// close(pipes[0][0]);
-	// close(pipes[0][1]);
+	if(ppid == 0) {
+		dup2(pipes[0][0], STDIN_FILENO);
+		dup2(pipes[NUM_PIPES - 1][1], STDOUT_FILENO);
+		close(pipes[0][0]);
+		close(pipes[0][1]);
+		close(pipes[NUM_PIPES - 1][0]);
+		close(pipes[NUM_PIPES - 1][1]);
+		execlp(argv[2], argv[2], NULL);
+	}
+	close(pipes[0][0]);
+	close(pipes[0][1]);
 
 	for(j = 0; j < PROCESS_NUM + 1; j++) {
 		if (j != PROCESS_NUM) {
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 		}
 		close(pipes[j][1]);
 	}
-	
+
 	//last process
 	pids[PROCESS_NUM] = fork();
 	if(pids[PROCESS_NUM] < 0) {
