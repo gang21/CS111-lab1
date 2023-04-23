@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	for(i = 0; i < NUM_PIPES; i++) {
 		if(pipe(pipes[i]) == -1) {
 			printf("error with creating pipe\n");
-			exit(EXIT_FAILURE);
+			return(EXIT_FAILURE);
 		}
 	}
 
@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 
 	//first process
 	if(pids[0] == 0) {
-		// printf("First Process 1: %s\n", argv[1]);
 		dup2(pipes[0][1], STDOUT_FILENO);
 		close(pipes[0][0]);
 		close(pipes[0][1]);
@@ -43,7 +42,6 @@ int main(int argc, char *argv[])
 	}
 
 	for(i = 1; i < PROCESS_NUM - 1; i++) {
-		// printf("The for loop be running\n");
 		pids[i] = fork();
 		if(pids[i] < 0) {
 			return(EXIT_FAILURE);
@@ -62,25 +60,26 @@ int main(int argc, char *argv[])
 		close(pipes[i-1][0]);
 		close(pipes[i-1][1]);
 	}
+	if(argc != 2) {
+		//last process
+		pids[PROCESS_NUM-1] = fork();
+		if(pids[PROCESS_NUM-1] < 0) {
+			return(EXIT_FAILURE);
+		}
+		if(pids[PROCESS_NUM-1] == 0) {
+			dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
+			close(pipes[NUM_PIPES - 1][0]);
+			close(pipes[NUM_PIPES - 1][1]);
+			execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
+			return(EXIT_FAILURE);
+		}
 
-	//last process
-	pids[PROCESS_NUM-1] = fork();
-	if(pids[PROCESS_NUM-1] < 0) {
-		return(EXIT_FAILURE);
-	}
-	if(pids[PROCESS_NUM-1] == 0) {
-		dup2(pipes[NUM_PIPES - 1][0], STDIN_FILENO);
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
-		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
-		return(EXIT_FAILURE);
-	}
-
-	close(pipes[NUM_PIPES - 1][0]);
-	close(pipes[NUM_PIPES - 1][1]);
-	
-	for(i = 0; i < PROCESS_NUM; i++) {
-		waitpid(pids[i], NULL, 0);
+		
+		for(i = 0; i < PROCESS_NUM; i++) {
+			waitpid(pids[i], NULL, 0);
+		}
 	}
 
 	return 0;
