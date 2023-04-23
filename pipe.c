@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 		execlp(argv[1], argv[1], NULL);
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 
 	for(i = 1; i < PROCESS_NUM - 1; i++) {
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 			close(pipes[i][0]);
 			close(pipes[i][1]);
 			execlp(argv[i+1], argv[i+1], NULL);
-			exit(EXIT_FAILURE);
+			return(EXIT_FAILURE);
 		}
 		close(pipes[i-1][0]);
 		close(pipes[i-1][1]);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 		close(pipes[NUM_PIPES - 1][0]);
 		close(pipes[NUM_PIPES - 1][1]);
 		execlp(argv[PROCESS_NUM], argv[PROCESS_NUM], NULL);
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 
 	close(pipes[NUM_PIPES - 1][0]);
